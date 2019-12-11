@@ -15,8 +15,9 @@ var (
 		Short: "ango 是一个用于部署项目至生产环境的部署工具",
 		Long: `基于golang开发的一个用于部署项目至生产环境的部署工具
 目前仅使用playbook部署相关业务, 文档查看: https://github.com/oldthreefeng/ango`,
+		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("ango -h 获取帮助")
+			fmt.Printf("ango 是一个用于部署项目至生产环境的部署工具\nango -h 获取帮助")
 		},
 	}
 )
