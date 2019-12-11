@@ -4,42 +4,31 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
-	"strings"
 )
 
-
-
 var (
-	project string
-	tag string
-	author string
-	rootCmd = &cobra.Command{
-		Use:   						"ango ",
-		Short: 						"ango 是一个用于部署项目至生产环境的部署工具",
-		Long:						`基于golang开发的一个用于部署项目至生产环境的部署工具
+	DingDingToken string = os.Getenv("DingDingToken")
+	Tag           string
+	Author        string
+	rootCmd       = &cobra.Command{
+		Use:   "ango ",
+		Short: "ango 是一个用于部署项目至生产环境的部署工具",
+		Long: `基于golang开发的一个用于部署项目至生产环境的部署工具
 目前仅使用playbook部署相关业务, 文档查看: https://github.com/oldthreefeng/ango`,
-		Run: 						func(cmd *cobra.Command, args []string) {
-										fmt.Println("ango -h 获取帮助")
-									},
-	}
-
-	projCmd = &cobra.Command{
-		Use:                        "deploy [ some project to deploy ]",
-		Short:                      "to deploy  project name",
-		Long:                       "to deploy  project name",
-		Example:					"api, mall, adamll",
-		Args:						cobra.MinimumNArgs(1),
-		Run:                        func(cmd *cobra.Command, args []string) {
-			fmt.Println("deploy: " + strings.Join(args, " "))
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println("ango -h 获取帮助")
 		},
 	}
 )
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&author,"author", "a", "louis.hong", "author name for copyright attribution")
-	projCmd.PersistentFlags().StringVarP(&project,"project", "p", "api", "project name for deploying")
-	projCmd.PersistentFlags().StringVarP(&tag,"tag", "t", "", "tags for the project version")
+	if DingDingToken == "" {
+		DingDingToken = "01bc245b59a337090fca147c123488de188d00cc56e60c77c3c573ddfae655b9"
+	}
+	rootCmd.PersistentFlags().StringVarP(&Author, "author", "a", "louis.hong", "author name for copyright attribution")
+	rootCmd.PersistentFlags().StringVarP(&Tag, "tag", "t", "", "tags for the project version")
 	rootCmd.AddCommand(projCmd)
+	rootCmd.AddCommand(rollbackCmd)
 }
 
 func Execute() {
