@@ -12,6 +12,9 @@ import (
 )
 
 var (
+	Buildstamp = ""
+	Githash    = ""
+	Goversion  = ""
 	DingDingToken string = os.Getenv("DingDingToken")
 	Config 		  string
 	Tag           string
@@ -24,6 +27,9 @@ var (
 		Args: cobra.MinimumNArgs(1),
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Printf("ango 是一个用于部署项目至生产环境的部署工具\nango -h 获取帮助")
+			fmt.Printf("Git Commit Hash:     %s\n", Githash)
+			fmt.Printf("UTC Build Time :     %s\n", Buildstamp)
+			fmt.Printf("Go Version:          %s\n", Goversion)
 		},
 	}
 )
