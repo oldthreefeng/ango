@@ -7,13 +7,13 @@ package play
 
 import (
 	"bytes"
-	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
 
 type Alarm interface {
-	Dingding(DingDingUrl string) error
+	Dingding(Dingdingurl string) error
 }
 
 type MarkDowning struct {
@@ -39,35 +39,30 @@ type Linking struct {
 }
 
 func (m MarkDowning) Dingding(DingDingUrl string) error {
-	data, err := json.Marshal(m)
-	if err != nil {
-		return err
-	}
-	req := bytes.NewBuffer(data)
-	_, err = http.DefaultClient.Post(DingDingUrl, "application/json", req)
-	if err != nil {
-		return err
-	}
-	return nil
+	baseBody:= fmt.Sprintf(`{"msgtype": "markdown", 
+    "markdown": {
+        "title": "%s",
+        "text": "%s"
+     },
+	"at":{
+       "atMobiles": %s
+     },
+     "isAtAll": false
+	}`,m.Markdown.Title, m.Markdown.Text, m.At.AtMobiles)
+	req := bytes.NewBuffer([]byte(baseBody))
+	_, err := http.DefaultClient.Post(DingDingUrl, "application/json", req)
+	return err
 }
 
-func (m Linking) Dingding(DingDingUrl string) error {
-	data, err := json.Marshal(m)
-	if err != nil {
-		return err
-	}
-	reader := bytes.NewReader(data)
-	req, err := http.NewRequest("POST", DingDingUrl, reader)
-	if err != nil {
-		return err
-	}
-	client := &http.Client{}
-	req.Header.Set("Content-Type", "application/json; charset=utf-8")
-	resp, err := client.Do(req)
-	//fmt.Printf("%#v",resp)
-	defer resp.Body.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+func (m Linking) Dingding( DingDingUrl string) error {
+	baseBody := fmt.Sprintf(`{"msgtype": "link", 
+    "link": {
+        "title": "%s",
+        "text": "%s"
+        "messageUrl": "%s"
+        "picUrl": "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
+     }`,m.Link.Title, m.Link.Text, m.Link.MessageUrl)
+	req := bytes.NewBuffer([]byte(baseBody))
+	_, err := http.DefaultClient.Post(DingDingUrl, "application/json", req)
+	return err
 }

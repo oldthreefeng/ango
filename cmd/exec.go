@@ -46,40 +46,34 @@ func Exec(cmdStr, Type string) error {
 	if err = cmd.Wait(); err != nil {
 		return err
 	}
-	link := play.Linking{}
-	link.Msgtype = "link"
-	link.Link.Title = fmt.Sprintf("%s-%s", args, Tag)
-	link.Link.Text = fmt.Sprintf("%s:%s %s成功", args, Tag, Type)
-	link.Link.PicUrl = "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
+	var l play.Linking
+	l.Link.Title = fmt.Sprintf("%s-%s", args, Tag)
+	l.Link.Text = fmt.Sprintf("%s:%s %s成功", args, Tag, Type)
 	switch args {
 	case "api", "yj-mall", "yj-h5":
-		link.Link.MessageUrl = MallApiUrl
+		l.Link.MessageUrl = MallApiUrl
 	case "card":
-		link.Link.MessageUrl = CardApiUrl
+		l.Link.MessageUrl = CardApiUrl
 	case "adcom":
-		link.Link.MessageUrl = AdComApiUrl
+		l.Link.MessageUrl = AdComApiUrl
 	case "www-ypl":
-		link.Link.MessageUrl = WWWUrl
+		l.Link.MessageUrl = WWWUrl
 	case "yj-admall":
-		link.Link.MessageUrl = AdMallUrl
+		l.Link.MessageUrl = AdMallUrl
 	case "plmall":
-		link.Link.MessageUrl = PlMall
+		l.Link.MessageUrl = PlMall
 	default:
-		link.Link.MessageUrl = MallApiUrl
+		l.Link.MessageUrl = MallApiUrl
 	}
-	fmt.Println(link)
 	if DingDingUrl == "" {
 		DingDingUrl = `https://oapi.dingtalk.com/robot/send?access_token=01bc245b59a337090fca147c123488de188d00cc56e60c77c3c573ddfae655b9`
 	}
-	err = link.Dingding(DingDingUrl)
+	err = l.Dingding(DingDingUrl)
 	if err != nil {
 		return err
 	}
 	err = WriteToLog(Type)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 func WriteToLog(Type string) error {
