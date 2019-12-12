@@ -1,4 +1,4 @@
-LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Buildstamp=$(shell date -u '+%Y-%m-%d %I:%M:%S %Z')"
+LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Buildstamp=$(shell date -u '+%Y-%m-%d %H:%M:%S %Z')"
 LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Githash=$(shell git rev-parse --short HEAD)"
 LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Goversion=$(shell go version)"
 BRANCH := $(shell git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3)
