@@ -76,8 +76,7 @@ func Exec(cmdStr, Type string) error {
 	if err != nil {
 		return err
 	}
-	err = WriteToLog(Type)
-	return err
+	return WriteToLog(Type)
 }
 
 func WriteToLog(Type string) error {

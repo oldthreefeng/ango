@@ -45,6 +45,7 @@ $ go get  github.com/oldthreefeng/ango
 ### to run palybook
 
 ```bash
+$ export DingDingMobiles="158****6468"
 $ export DingDingUrl="https://oapi.dingtalk.com/robot/send?access_token=*****"
 $ ango deploy -h 
 use ango to deploy project with webhook to dingding
