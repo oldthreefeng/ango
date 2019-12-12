@@ -8,17 +8,29 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 var (
+	rollbackType = "回滚成功"
 	rollbackCmd = &cobra.Command{
-		Use:     "rollback  the project",
+		Use:     "rollback [flags]",
 		Short:   "rollback the project",
-		Example: "api, mall, admall",
-		Args:    cobra.ExactArgs(1),
+		Long:    "rollback 回退版本, 需要指定回退版本的yml文件及要回退的version",
+		Example: "\tango rollback -f roll_api.yml -t v1.2",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("rollback :" + strings.Join(args, " "))
+			if len(args) == 0 {
+				err := RollBack()
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
+			fmt.Println(`Use "ango rollback -h" to get help `)
 		},
 	}
 )
+
+func RollBack() error {
+	cmdStr := fmt.Sprintf("%s %s -e version=%s", AnsibleBin, Config, Tag)
+	return Exec(cmdStr, rollbackType)
+}
