@@ -9,6 +9,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/oldthreefeng/ango/play"
+	"github.com/unknwon/com"
 	"os"
 	"os/exec"
 	"strings"
@@ -77,16 +78,8 @@ func Exec(cmdStr, Type string) error {
 }
 
 func WriteToLog(Type string) error {
-	f, err := os.OpenFile("fabu.log", os.O_APPEND|os.O_WRONLY, 0644)
-	if err != nil {
-		return err
-	}
 	args := strings.Split(Config, ".")[0]
 	date := time.Now().Format("2006-01-02 15:04:05")
-	_, err = fmt.Fprintf(f, "[INFO] %s %s-%s %s成功\n", date, args, Tag, Type)
-	defer f.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	data := fmt.Sprintf("[INFO] %s %s-%s %s成功\n", date, args, Tag, Type)
+	return com.WriteFile("fabu.log",[]byte(data))
 }

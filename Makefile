@@ -12,6 +12,7 @@ GOBUILD = $(GOCMD) build
 
 NAME := ango
 DIRNAME := angodir
+GOBIN := /usr/local/go/bin/
 SRCFILE= main.go
 SOFTWARENAME=$(NAME)-$(VERSION)
 
@@ -32,6 +33,7 @@ $(PLATFORMS): Asset
 	@echo "编译" $@
 	GOOS=$@ GOARCH=amd64 go build -ldflags '$(LDFLAGS)' -x -o $(NAME) $(SRCFILE)
 	cp -f $(NAME) $(DIRNAME)
+	cp -f $(NAME) $(GOBIN)
 	tar czvf $(BUILDDIR)/$(SOFTWARENAME)-$@-amd64.tar.gz $(DIRNAME)
 .PHONY: clean
 clean:
