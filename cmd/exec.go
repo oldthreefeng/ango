@@ -72,28 +72,6 @@ func Exec(cmdStr, Type string) error {
 		}
 	}
 
-	//var l play.Linking
-	//l.Title = fmt.Sprintf("%s-%s", args, Tag)
-	//l.Text = fmt.Sprintf("%s:%s %s成功", args, Tag, Type)
-	//switch args {
-	//case "api", "yj-mall", "yj-h5":
-	//	l.MessageUrl = MallApiUrl
-	//case "card":
-	//	l.MessageUrl = CardApiUrl
-	//case "adcom":
-	//	l.MessageUrl = AdComApiUrl
-	//case "www-ypl":
-	//	l.MessageUrl = WWWUrl
-	//case "yj-admall":
-	//	l.MessageUrl = AdMallUrl
-	//case "plmall":
-	//	l.MessageUrl = PlMall
-	//default:
-	//	l.MessageUrl = MallApiUrl
-	//}
-	if DingDingUrl == "" {
-		DingDingUrl = `https://oapi.dingtalk.com/robot/send?access_token=01bc245b59a337090fca147c123488de188d00cc56e60c77c3c573ddfae655b9`
-	}
 	err = t.Dingding(DingDingUrl)
 	if err != nil {
 		return err

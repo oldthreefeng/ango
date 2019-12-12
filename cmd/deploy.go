@@ -13,12 +13,6 @@ import (
 
 const (
 	AnsibleBin = "/usr/bin/ansible-playbook "
-	//MallApiUrl  = "https://mall.youpenglai.com/apis/version"
-	//AdMallUrl   = "https://admall.youpenglai.com"
-	//AdComApiUrl = "https://ad.youpenglai.com/Public/version"
-	//CardApiUrl  = "https://card.youpenglai.com/card/nologin/version"
-	//WWWUrl      = "https://www.youpenglai.com/"
-	//PlMall      = "https://plmall.youpenglai.com/"
 	Version = "1.0.0"
 )
 
