@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	rollbackType = "回滚成功"
+	rollbackType = "回滚"
 	rollbackCmd = &cobra.Command{
 		Use:     "rollback [flags]",
 		Short:   "rollback the project",
