@@ -62,7 +62,7 @@ func (m Linking) Dingding(DingDingUrl string) error {
 		return err
 	}
 	client := &http.Client{}
-	req.Header.Set("content-Typr", "application/json; charset=utf-8")
+	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	resp, err := client.Do(req)
 	//fmt.Printf("%#v",resp)
 	defer resp.Body.Close()
