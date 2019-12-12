@@ -12,7 +12,39 @@ import (
 	"strings"
 )
 
-
+const (
+	TextTemplate = `{
+     "msgtype": "text",
+     "text": {
+         "content": "%s"
+     },
+     "at": {
+         "isAtAll": false
+     }
+ }`
+	LinkTemplate = `{
+    "msgtype": "link", 
+    "link": {
+        "text": "%s", 
+        "title": "%s", 
+        "picUrl": "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png", 
+        "messageUrl": "%s"
+    }
+}`
+	MarkTemplate = `{
+     "msgtype": "markdown",
+     "markdown": {
+         "title":"%s",
+         "text": "%s"
+     },
+    "at": {
+        "atMobiles": [
+            "%s",
+        ], 
+        "isAtAll": false
+    }
+ }`
+)
 type Alarm interface {
 	Dingding(Dingdingurl string) error
 }
@@ -40,16 +72,7 @@ type Linking struct {
 }
 
 func (m MarkDowning) Dingding(DingDingUrl string) error {
-	baseBody:= fmt.Sprintf(`{"msgtype": "markdown", 
-    "markdown": {
-        "title": "%s",
-        "text": "%s"
-     },
-	"at":{
-       "atMobiles": %s
-     },
-     "isAtAll": false
-	}`,m.Markdown.Title, m.Markdown.Text, m.At.AtMobiles)
+	baseBody:= fmt.Sprintf(MarkTemplate,m.Markdown.Title, m.Markdown.Text, m.At.AtMobiles)
 	req , err := http.NewRequest("POST", DingDingUrl, strings.NewReader(baseBody))
 	if err != nil {
 		return err
@@ -66,13 +89,7 @@ func (m MarkDowning) Dingding(DingDingUrl string) error {
 }
 
 func (m Linking) Dingding( DingDingUrl string) error {
-	baseBody := fmt.Sprintf(`{"msgtype": "link", 
-    "link": {
-        "title": "%s",
-        "text": "%s"
-        "messageUrl": "%s"
-        "picUrl": "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
-     }`,m.Link.Title, m.Link.Text, m.Link.MessageUrl)
+	baseBody := fmt.Sprintf(LinkTemplate,m.Link.Title, m.Link.Text, m.Link.MessageUrl)
 	req , err := http.NewRequest("POST", DingDingUrl, strings.NewReader(baseBody))
 	if err != nil {
 		return err
