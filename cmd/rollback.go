@@ -16,16 +16,17 @@ var (
 		Use:     "rollback [flags]",
 		Short:   "rollback the project",
 		Long:    "rollback 回退版本, 需要指定回退版本的yml文件及要回退的version",
-		Example: "\tango rollback -f roll_api.yml -t v1.2",
+		Example: "  ango rollback -f roll_api.yml -t v1.2",
 		Run: func(cmd *cobra.Command, args []string) {
-			if len(args) == 0 {
+			if len(args) == 0 && Config != "" && Tag != "" {
 				err := RollBack()
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
+			} else {
+				fmt.Println(`Use "ango rollback -h" to get help `)
 			}
-			fmt.Println(`Use "ango rollback -h" to get help `)
 		},
 	}
 )

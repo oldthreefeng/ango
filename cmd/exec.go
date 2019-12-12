@@ -7,7 +7,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"github.com/oldthreefeng/ango/play"
 	"os/exec"
@@ -17,11 +16,8 @@ import (
 func Exec(cmdStr, Type string) error {
 	fmt.Println(cmdStr)
 	// yj-admall.yml ==> yj-admall
-	if Config == "" {
-		return errors.New("config is emtpy")
-	}
 	args := strings.Split(Config, ".")[0]
-	fmt.Printf("%s,%s", args, Config)
+	//fmt.Printf("%s,%s", args, Config)
 	cmd := exec.Command("sh", "-c", cmdStr)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

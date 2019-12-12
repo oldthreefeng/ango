@@ -28,14 +28,16 @@ var (
 		Use:     "deploy [flags]",
 		Short:   "to deploy project",
 		Long:    "use ango to deploy project with webhook to dingding",
-		Example: "\tango deploy -f api.yml -t v1.2.0",
+		Example: "  ango deploy -f api.yml -t v1.2.0",
 		Run: func(cmd *cobra.Command, args []string) {
-			if len(args) == 0 {
+			if len(args) == 0 && Config != "" && Tag != "" {
 				err := Deploy()
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
+			} else {
+				fmt.Println(`Use "ango deploy -h" to get help `)
 			}
 		},
 	}
