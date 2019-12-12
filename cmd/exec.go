@@ -47,23 +47,23 @@ func Exec(cmdStr, Type string) error {
 		return err
 	}
 	var l play.Linking
-	l.Link.Title = fmt.Sprintf("%s-%s", args, Tag)
-	l.Link.Text = fmt.Sprintf("%s:%s %s成功", args, Tag, Type)
+	l.Title = fmt.Sprintf("%s-%s", args, Tag)
+	l.Text = fmt.Sprintf("%s:%s %s成功", args, Tag, Type)
 	switch args {
 	case "api", "yj-mall", "yj-h5":
-		l.Link.MessageUrl = MallApiUrl
+		l.MessageUrl = MallApiUrl
 	case "card":
-		l.Link.MessageUrl = CardApiUrl
+		l.MessageUrl = CardApiUrl
 	case "adcom":
-		l.Link.MessageUrl = AdComApiUrl
+		l.MessageUrl = AdComApiUrl
 	case "www-ypl":
-		l.Link.MessageUrl = WWWUrl
+		l.MessageUrl = WWWUrl
 	case "yj-admall":
-		l.Link.MessageUrl = AdMallUrl
+		l.MessageUrl = AdMallUrl
 	case "plmall":
-		l.Link.MessageUrl = PlMall
+		l.MessageUrl = PlMall
 	default:
-		l.Link.MessageUrl = MallApiUrl
+		l.MessageUrl = MallApiUrl
 	}
 	if DingDingUrl == "" {
 		DingDingUrl = `https://oapi.dingtalk.com/robot/send?access_token=01bc245b59a337090fca147c123488de188d00cc56e60c77c3c573ddfae655b9`
