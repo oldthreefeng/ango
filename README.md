@@ -13,7 +13,7 @@
 
 ## Usage
 
-### download adn compile
+### download and compile
 
 use git to download source code
 
@@ -25,8 +25,8 @@ $ go mod download
 $ make linux
 # darwin
 $ make darwin
-$ ango 
-./ango
+
+$ ./ango
 ango is cli tools to running Ansible playbooks from Golang.
 run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
 ango version, :      1.0.0
