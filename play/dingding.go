@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2019. The ango Authors. All rights reserved.
+ * Use of this source code is governed by a MIT-style
+ * license that can be found in the LICENSE file.
+ */
 package play
 
 import (
@@ -43,7 +48,6 @@ func (m MarkDowning) Dingding(DingDingToken string) error {
 }
 
 func (m Linking) Dingding(DingDingToken string) error {
-
 	data, err := json.Marshal(m)
 	if err != nil {
 		return err

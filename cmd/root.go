@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2019. The ango Authors. All rights reserved.
+ * Use of this source code is governed by a MIT-style
+ * license that can be found in the LICENSE file.
+ */
 package cmd
 
 import (
@@ -8,6 +13,7 @@ import (
 
 var (
 	DingDingToken string = os.Getenv("DingDingToken")
+	Config 		  string
 	Tag           string
 	Author        string
 	rootCmd       = &cobra.Command{
@@ -28,6 +34,7 @@ func init() {
 	}
 	rootCmd.PersistentFlags().StringVarP(&Author, "author", "a", "louis.hong", "author name for copyright attribution")
 	rootCmd.PersistentFlags().StringVarP(&Tag, "tag", "t", "", "tags for the project version")
+	rootCmd.PersistentFlags().StringVarP(&Config, "config", "f", "", "ansible-playbook for yml config")
 	rootCmd.AddCommand(projCmd)
 	rootCmd.AddCommand(rollbackCmd)
 }

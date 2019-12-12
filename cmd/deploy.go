@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2019. The ango Authors. All rights reserved.
+ * Use of this source code is governed by a MIT-style
+ * license that can be found in the LICENSE file.
+ */
 package cmd
 
 import (
@@ -5,20 +10,25 @@ import (
 	"github.com/oldthreefeng/ango/play"
 	"github.com/spf13/cobra"
 	"os/exec"
+	"strings"
 )
 
 var (
 	projCmd = &cobra.Command{
-		Use:     "deploy [ some project to deploy ]",
-		Short:   "to deploy project ",
-		Long:    "to deploy project ",
-		Example: "api, yj-mall, yj-adamll",
-		Args:    cobra.MinimumNArgs(1),
+		Use:     "deploy [flags]",
+		Short:   "to deploy project",
+		Long:    "use ango to deploy project with webhook to dingding",
+		Example: "ango deploy -f api.yml -t v1.2.0",
 		Run: func(cmd *cobra.Command, args []string) {
-			for _, arg := range args {
+			if len(args) == 0 {
+				err := PlaybookForFile()
+				if err != nil {
+					return
+				}
+			}
+			for _, arg := range  args {
 				err := PlayBook(arg)
 				if err != nil {
-					fmt.Println(err)
 					return
 				}
 			}
@@ -44,9 +54,28 @@ func PlayBook(args string) error {
 	//	return err
 	//}
 	//fmt.Printf("%s", output)
+
+	if Config != "" {
+		args = strings.Split(Config, ".")[0]
+	}
 	cmdStr := AnsibleBin + args + ".yml" + " -e version=" + Tag
+	return Exec(cmdStr)
+}
+
+func PlaybookForFile() error {
+	cmdStr := AnsibleBin + Config + " -e version=" + Tag
+	return Exec(cmdStr)
+}
+
+func Exec(cmdStr string) error {
 	fmt.Println(cmdStr)
-	cmd := exec.Command("sh","-c", cmdStr)
+	// yj-admall.yml ==> yj-admall
+	if Config == "" {
+		Config = strings.Split(cmdStr, " ")[1]
+	}
+	args := strings.Split(Config, ".")[0]
+	fmt.Printf("%s,%s", args, Config)
+	cmd := exec.Command("sh", "-c", cmdStr)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return err
@@ -55,7 +84,7 @@ func PlayBook(args string) error {
 		return err
 	}
 
-	for  {
+	for {
 		tmp := make([]byte, 1024)
 		_, err := stdout.Read(tmp)
 		fmt.Print(string(tmp))
@@ -64,14 +93,14 @@ func PlayBook(args string) error {
 		}
 	}
 
-	if err = cmd.Wait() ; err != nil {
+	if err = cmd.Wait(); err != nil {
 		return err
 	}
 
 	link := play.Linking{}
 	link.Msgtype = "link"
 	link.Link.Title = args
-	link.Link.Text = args +":"+ Tag + "部署成功"
+	link.Link.Text = args + ":" + Tag + "部署成功"
 	link.Link.PicUrl = "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
 	switch args {
 	case "api", "yj-mall", "yj-h5":
@@ -89,7 +118,7 @@ func PlayBook(args string) error {
 	default:
 		link.Link.MessageUrl = MallApiUrl
 	}
-	//fmt.Println(link)
+	fmt.Println(link)
 	err = link.Dingding(DingDingToken)
 	if err != nil {
 		return err
