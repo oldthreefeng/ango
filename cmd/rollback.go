@@ -17,9 +17,10 @@ var (
 		Use:     "rollback [flags]",
 		Short:   "rollback the project",
 		Long:    "rollback 回退版本, 需要指定回退版本的yml文件及要回退的version",
+		Args:    cobra.NoArgs,
 		Example: "  ango rollback -f roll_api.yml -t v1.2",
 		Run: func(cmd *cobra.Command, args []string) {
-			if len(args) == 0 && Config != "" && Tag != "" {
+			if Config != "" && Tag != "" {
 				err := RollBack()
 				if err != nil {
 					fmt.Println(err)

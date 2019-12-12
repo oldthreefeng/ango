@@ -13,7 +13,7 @@ import (
 
 const (
 	AnsibleBin = "/usr/bin/ansible-playbook "
-	Version = "1.0.0"
+	Version    = "1.0.0"
 )
 
 var (
@@ -23,8 +23,9 @@ var (
 		Short:   "to deploy project",
 		Long:    "use ango to deploy project with webhook to dingding",
 		Example: "  ango deploy -f api.yml -t v1.2.0",
+		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			if len(args) == 0 && Config != "" && Tag != "" {
+			if Config != "" && Tag != "" {
 				err := Deploy()
 				if err != nil {
 					fmt.Println(err)
