@@ -82,8 +82,8 @@ const API = `
 
 func Generate() {
 	reader := strings.NewReader(API)
-	var conf  = config.Source(reader)
-	yml, err  := config.NewYAML(conf)
+	var conf = config.Source(reader)
+	yml, err := config.NewYAML(conf)
 	if err != nil {
 		fmt.Println(err)
 	}

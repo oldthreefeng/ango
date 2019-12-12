@@ -18,7 +18,7 @@ var (
 	Config     string
 	Tag        string
 	Author     string
-	Real          bool
+	Real       bool
 	rootCmd    = &cobra.Command{
 		Use:   "ango ",
 		Short: "ango 是一个用于部署项目至生产环境的部署工具",

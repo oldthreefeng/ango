@@ -12,19 +12,19 @@ import (
 )
 
 const (
-	AnsibleBin  = "/usr/bin/ansible-playbook "
-	MallApiUrl  = "https://mall.youpenglai.com/apis/version"
-	AdMallUrl   = "https://admall.youpenglai.com"
-	AdComApiUrl = "https://ad.youpenglai.com/Public/version"
-	CardApiUrl  = "https://card.youpenglai.com/card/nologin/version"
-	WWWUrl      = "https://www.youpenglai.com/"
-	PlMall      = "https://plmall.youpenglai.com/"
-	Version		= "1.0.0"
+	AnsibleBin = "/usr/bin/ansible-playbook "
+	//MallApiUrl  = "https://mall.youpenglai.com/apis/version"
+	//AdMallUrl   = "https://admall.youpenglai.com"
+	//AdComApiUrl = "https://ad.youpenglai.com/Public/version"
+	//CardApiUrl  = "https://card.youpenglai.com/card/nologin/version"
+	//WWWUrl      = "https://www.youpenglai.com/"
+	//PlMall      = "https://plmall.youpenglai.com/"
+	Version = "1.0.0"
 )
 
 var (
-	DeployType = "部署"
-	projCmd = &cobra.Command{
+	DeployType = "deploy"
+	projCmd    = &cobra.Command{
 		Use:     "deploy [flags]",
 		Short:   "to deploy project",
 		Long:    "use ango to deploy project with webhook to dingding",
@@ -43,7 +43,6 @@ var (
 	}
 )
 
-
 func PlayBook(args string) error {
 	//运行完了才打印. 不方便查看
 	//cmd := AnsibleBin + args + ".yml" + " -e version=" + Tag
@@ -57,11 +56,10 @@ func PlayBook(args string) error {
 		args = strings.Split(Config, ".")[0]
 	}
 	cmdStr := fmt.Sprintf("%s %s.yml -e version=%s", AnsibleBin, args, Tag)
-	return Exec(cmdStr,"deploy 部署")
+	return Exec(cmdStr, "deploy 部署")
 }
 
 func Deploy() error {
 	cmdStr := fmt.Sprintf("%s %s -e version=%s", AnsibleBin, Config, Tag)
 	return Exec(cmdStr, DeployType)
 }
-

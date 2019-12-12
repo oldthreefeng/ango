@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	rollbackType = "回滚"
-	rollbackCmd = &cobra.Command{
+	rollbackType = "rollback"
+	rollbackCmd  = &cobra.Command{
 		Use:     "rollback [flags]",
 		Short:   "rollback the project",
 		Long:    "rollback 回退版本, 需要指定回退版本的yml文件及要回退的version",
@@ -39,5 +39,5 @@ func RollBack() error {
 	} else {
 		return errors.New("use extra flags -r or --real to run rollback")
 	}
-	
+
 }
