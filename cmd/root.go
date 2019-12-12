@@ -15,11 +15,11 @@ var (
 	Buildstamp = ""
 	Githash    = ""
 	Goversion  = ""
-	DingDingToken string = os.Getenv("DingDingToken")
-	Config 		  string
-	Tag           string
-	Author        string
-	rootCmd       = &cobra.Command{
+	Config     string
+	Tag        string
+	Author     string
+	Real          bool
+	rootCmd    = &cobra.Command{
 		Use:   "ango ",
 		Short: "ango 是一个用于部署项目至生产环境的部署工具",
 		Long: `基于golang开发的一个用于部署项目至生产环境的部署工具
@@ -38,12 +38,10 @@ run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
 )
 
 func init() {
-	if DingDingToken == "" {
-		DingDingToken = "01bc245b59a337090fca147c123488de188d00cc56e60c77c3c573ddfae655b9"
-	}
 	rootCmd.PersistentFlags().StringVarP(&Author, "author", "a", "louis.hong", "author name for copyright attribution")
-	rootCmd.PersistentFlags().StringVarP(&Tag, "tag", "t", "", "tags for the project version")
+	rootCmd.PersistentFlags().StringVarP(&Tag, "tags", "t", "", "tags for the project version")
 	rootCmd.PersistentFlags().StringVarP(&Config, "config", "f", "", "ansible-playbook for yml config")
+	rollbackCmd.PersistentFlags().BoolVarP(&Real, "real", "r", false, "really to rollback this version")
 	rootCmd.AddCommand(projCmd)
 	rootCmd.AddCommand(rollbackCmd)
 }

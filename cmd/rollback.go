@@ -6,6 +6,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 )
@@ -33,5 +34,10 @@ var (
 
 func RollBack() error {
 	cmdStr := fmt.Sprintf("%s %s -e version=%s", AnsibleBin, Config, Tag)
-	return Exec(cmdStr, rollbackType)
+	if Real {
+		return Exec(cmdStr, rollbackType)
+	} else {
+		return errors.New("use extra flags -r or --real to run rollback")
+	}
+	
 }

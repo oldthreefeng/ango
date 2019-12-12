@@ -15,6 +15,11 @@ import (
 	"time"
 )
 
+var (
+	DingDingUrl string = os.Getenv("DingDingUrl")
+)
+
+
 func Exec(cmdStr, Type string) error {
 	fmt.Println(cmdStr)
 	// yj-admall.yml ==> yj-admall
@@ -63,7 +68,10 @@ func Exec(cmdStr, Type string) error {
 		link.Link.MessageUrl = MallApiUrl
 	}
 	fmt.Println(link)
-	err = link.Dingding(DingDingToken)
+	if DingDingUrl == "" {
+		DingDingUrl = `https://oapi.dingtalk.com/robot/send?access_token=01bc245b59a337090fca147c123488de188d00cc56e60c77c3c573ddfae655b9`
+	}
+	err = link.Dingding(DingDingUrl)
 	if err != nil {
 		return err
 	}
