@@ -1,0 +1,9 @@
+- hosts: test 
+  remote_user: root
+  tasks:
+    - name: ping test
+      shell: "echo {{version}}"
+      register: echo
+    - name: echo
+      debug: var=echo.stdout
+      with_items: echo.results

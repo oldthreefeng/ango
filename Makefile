@@ -1,5 +1,5 @@
 LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Buildstamp=$(shell date -u '+%Y-%m-%d %I:%M:%S %Z')"
-LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Githash=$(shell git rev-parse HEAD)"
+LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Githash=$(shell git rev-parse --short HEAD)"
 LDFLAGS += -X "github.com/oldthreefeng/ango/cmd.Goversion=$(shell go version)"
 BRANCH := $(shell git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3)
 BUILD := $(shell git rev-parse --short HEAD)
@@ -30,7 +30,7 @@ Asset:
 .PHONY: $(PLATFORMS)
 $(PLATFORMS): Asset
 	@echo "编译" $@
-	GOOS=$@ GOARCH=amd64 go build -ldflags $(LDFLAGS) -x -o $(NAME) $(SRCFILE)
+	GOOS=$@ GOARCH=amd64 go build -ldflags '$(LDFLAGS)' -x -o $(NAME) $(SRCFILE)
 	cp -f $(NAME) $(DIRNAME)
 	tar czvf $(BUILDDIR)/$(SOFTWARENAME)-$@-amd64.tar.gz $(DIRNAME)
 .PHONY: clean
