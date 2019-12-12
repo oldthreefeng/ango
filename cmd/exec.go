@@ -56,7 +56,7 @@ func Exec(cmdStr, Type string) error {
 
 	var t play.Text
 	//t.Title = fmt.Sprintf("%s-%s", args, Tag)
-	t.Text = fmt.Sprintf("%s:%s %s成功, 请测试确认", args, Tag, Type)
+	t.Text = fmt.Sprintf("%s:%s %s成功, 请测试确认\n%s", args, Tag, Type, Comments)
 	if Type == "rollback" {
 		t.AtMobiles = AllMo
 	} else {

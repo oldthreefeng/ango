@@ -18,6 +18,7 @@ var (
 	Config     string
 	Tag        string
 	Author     string
+	Comments   string
 	Real       bool
 	rootCmd    = &cobra.Command{
 		Use:   "ango ",
@@ -41,6 +42,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&Author, "author", "a", "louis.hong", "author name for copyright attribution")
 	rootCmd.PersistentFlags().StringVarP(&Tag, "tags", "t", "", "tags for the project version")
 	rootCmd.PersistentFlags().StringVarP(&Config, "config", "f", "", "ansible-playbook for yml config")
+	projCmd.PersistentFlags().StringVarP(&Comments, "comments", "m", "", "add comments when send message to dingding")
 	rollbackCmd.PersistentFlags().BoolVarP(&Real, "real", "r", false, "really to rollback this version")
 	rootCmd.AddCommand(projCmd)
 	rootCmd.AddCommand(rollbackCmd)
