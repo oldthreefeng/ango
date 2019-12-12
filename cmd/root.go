@@ -27,7 +27,7 @@ var (
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Printf(`ango is cli tools to running Ansible playbooks from Golang.
 run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
-"`)
+`)
 			fmt.Printf("ango version, :      %s\n", Version)
 			fmt.Printf("Git Commit Hash:     %s\n", Githash)
 			fmt.Printf("UTC Build Time :     %s\n", Buildstamp)
