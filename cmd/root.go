@@ -25,7 +25,9 @@ var (
 		Long: `基于golang开发的一个用于部署项目至生产环境的部署工具
 目前仅使用playbook部署相关业务, 文档查看: https://github.com/oldthreefeng/ango`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf(`ango is cli tools to running Ansible playbooks from Golang.\nrun "ango -h" get more help, more see https://github.com/oldthreefeng/ango\n\n"`)
+			fmt.Printf(`ango is cli tools to running Ansible playbooks from Golang.
+run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
+"`)
 			fmt.Printf("ango version, :      %s\n", Version)
 			fmt.Printf("Git Commit Hash:     %s\n", Githash)
 			fmt.Printf("UTC Build Time :     %s\n", Buildstamp)
