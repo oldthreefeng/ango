@@ -6,9 +6,10 @@
 package play
 
 import (
-	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 
@@ -49,8 +50,18 @@ func (m MarkDowning) Dingding(DingDingUrl string) error {
      },
      "isAtAll": false
 	}`,m.Markdown.Title, m.Markdown.Text, m.At.AtMobiles)
-	req := bytes.NewBuffer([]byte(baseBody))
-	_, err := http.DefaultClient.Post(DingDingUrl, "application/json", req)
+	req , err := http.NewRequest("POST", DingDingUrl, strings.NewReader(baseBody))
+	if err != nil {
+		return err
+	}
+	client := &http.Client{}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("User-agent","firefox")
+	resp, err := client.Do(req)
+	defer resp.Body.Close()
+	fmt.Println(resp.StatusCode)
+	body,_ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 	return err
 }
 
@@ -62,7 +73,17 @@ func (m Linking) Dingding( DingDingUrl string) error {
         "messageUrl": "%s"
         "picUrl": "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
      }`,m.Link.Title, m.Link.Text, m.Link.MessageUrl)
-	req := bytes.NewBuffer([]byte(baseBody))
-	_, err := http.DefaultClient.Post(DingDingUrl, "application/json", req)
+	req , err := http.NewRequest("POST", DingDingUrl, strings.NewReader(baseBody))
+	if err != nil {
+		return err
+	}
+	client := &http.Client{}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("User-agent","firefox")
+	resp, err := client.Do(req)
+	defer resp.Body.Close()
+	fmt.Println(resp.StatusCode)
+	body,_ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(body))
 	return err
 }
