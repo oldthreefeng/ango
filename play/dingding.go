@@ -8,8 +8,13 @@ package play
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
+
+type Alarm interface {
+	Dingding(DingDingToken string) error
+}
 
 type MarkDowning struct {
 	Msgtype  string `json:"msgtype"`
@@ -52,9 +57,16 @@ func (m Linking) Dingding(DingDingToken string) error {
 	if err != nil {
 		return err
 	}
-	req := bytes.NewBuffer(data)
-	DingDingUrl := "https://oapi.dingtalk.com/robot/send?access_token=" + DingDingToken
-	_, err = http.DefaultClient.Post(DingDingUrl, "application/json", req)
+	reader := bytes.NewReader(data)
+	DingDingUrl := fmt.Sprintf("https://oapi.dingtalk.com/robot/send?access_token=%s", DingDingToken)
+	req, err := http.NewRequest("POST", DingDingUrl, reader)
+	if err != nil {
+		return err
+	}
+	client := &http.Client{}
+	req.Header.Set("content-Typr", "application/json; charset=utf-8")
+	resp, err := client.Do(req)
+	defer resp.Body.Close()
 	if err != nil {
 		return err
 	}

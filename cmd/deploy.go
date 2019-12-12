@@ -18,7 +18,7 @@ var (
 		Use:     "deploy [flags]",
 		Short:   "to deploy project",
 		Long:    "use ango to deploy project with webhook to dingding",
-		Example: "ango deploy -f api.yml -t v1.2.0",
+		Example: "\tango deploy -f api.yml -t v1.2.0",
 		Run: func(cmd *cobra.Command, args []string) {
 			if len(args) == 0 {
 				err := PlaybookForFile()
@@ -58,12 +58,12 @@ func PlayBook(args string) error {
 	if Config != "" {
 		args = strings.Split(Config, ".")[0]
 	}
-	cmdStr := AnsibleBin + args + ".yml" + " -e version=" + Tag
+	cmdStr := fmt.Sprintf("%s %s.yml -e version=%s", AnsibleBin, args, Tag)
 	return Exec(cmdStr)
 }
 
 func PlaybookForFile() error {
-	cmdStr := AnsibleBin + Config + " -e version=" + Tag
+	cmdStr := fmt.Sprintf("%s %s -e version=%s", AnsibleBin, Config, Tag)
 	return Exec(cmdStr)
 }
 
@@ -99,8 +99,8 @@ func Exec(cmdStr string) error {
 
 	link := play.Linking{}
 	link.Msgtype = "link"
-	link.Link.Title = args
-	link.Link.Text = args + ":" + Tag + "部署成功"
+	link.Link.Title = fmt.Sprintf("%s-%s", args, Tag)
+	link.Link.Text = fmt.Sprintf("%s:%s 部署成功", args, Tag)
 	link.Link.PicUrl = "http://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/sign-check-icon.png"
 	switch args {
 	case "api", "yj-mall", "yj-h5":
