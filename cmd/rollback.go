@@ -33,7 +33,10 @@ var (
 )
 
 func RollBack() error {
-	cmdStr := fmt.Sprintf("%s %s -e version=%s", AnsibleBin, Config, Tag)
+	cmdStr := fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, Config, Tag)
+	if Detail {
+		cmdStr += " -vv"
+	}
 	if Real {
 		return Exec(cmdStr, rollbackType)
 	} else {

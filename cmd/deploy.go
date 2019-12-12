@@ -49,11 +49,14 @@ func PlayBook(args string) error {
 	if Config != "" {
 		args = strings.Split(Config, ".")[0]
 	}
-	cmdStr := fmt.Sprintf("%s %s.yml -e version=%s", AnsibleBin, args, Tag)
+	cmdStr := fmt.Sprintf("%s %s.yml -e version=%s -f 1 ", AnsibleBin, args, Tag)
 	return Exec(cmdStr, "deploy 部署")
 }
 
 func Deploy() error {
-	cmdStr := fmt.Sprintf("%s %s -e version=%s", AnsibleBin, Config, Tag)
+	cmdStr := fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, Config, Tag)
+	if Detail {
+		cmdStr += " -vv"
+	}
 	return Exec(cmdStr, DeployType)
 }
