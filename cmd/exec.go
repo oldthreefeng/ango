@@ -81,7 +81,7 @@ func WriteToLog(Type string) error {
 	}
 	args := strings.Split(Config, ".")[0]
 	date := time.Now().Format("2006-01-02 15:04:05")
-	_, err = fmt.Fprintf(f, "[INFO] %s %s-%s %s", date, args, Tag, Type)
+	_, err = fmt.Fprintf(f, "[INFO] %s %s-%s %s成功\n", date, args, Tag, Type)
 	defer f.Close()
 	if err != nil {
 		return err
