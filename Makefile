@@ -11,7 +11,7 @@ GOCMD = go
 GOBUILD = $(GOCMD) build
 
 NAME := ango
-DIRNAME := angodir
+DIRNAME := bin
 GOBIN := /usr/local/go/bin/
 SRCFILE= main.go
 SOFTWARENAME=$(NAME)-$(VERSION)
@@ -31,7 +31,7 @@ Asset:
 .PHONY: $(PLATFORMS)
 $(PLATFORMS): Asset
 	@echo "编译" $@
-	GOOS=$@ GOARCH=amd64 go build -ldflags '$(LDFLAGS)' -x -o $(NAME) $(SRCFILE)
+	GOOS=$@ GOARCH=amd64 CGO_ENABLED=0 GO111MODULE=on GOPROXY=https://goproxy.cn go build -ldflags '$(LDFLAGS)'  -o $(NAME) $(SRCFILE)
 	cp -f $(NAME) $(DIRNAME)
 	cp -f $(NAME) $(GOBIN)
 	tar czvf $(BUILDDIR)/$(SOFTWARENAME)-$@-amd64.tar.gz $(DIRNAME)

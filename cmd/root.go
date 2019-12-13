@@ -40,7 +40,7 @@ run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
 )
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&Author, "author", "a", "louis.hong", "author name for copyright attribution")
+	rootCmd.PersistentFlags().StringVarP(&Author, "author", "", "louis.hong", "author name for copyright attribution")
 	rootCmd.PersistentFlags().BoolVarP(&Detail, "verbose", "v", false, "verbose mode to see more detail infomation")
 	rootCmd.PersistentFlags().StringVarP(&Tag, "tags", "t", "", "tags for the project version(requried)")
 	rootCmd.PersistentFlags().StringVarP(&Config, "config", "f", "", "ansible-playbook for yml config(requried)")
