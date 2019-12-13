@@ -9,6 +9,8 @@ BASEPATH := $(shell pwd)
 CGO_ENABLED = 0
 GOCMD = go
 GOBUILD = $(GOCMD) build
+GOTEST = $(GOCMD) test
+GOMOD = $(GOCMD) mod
 
 NAME := ango
 DIRNAME := bin
@@ -18,11 +20,22 @@ SOFTWARENAME=$(NAME)-$(VERSION)
 
 PLATFORMS := linux darwin
 
+.PHONY: test
+test:
+	$(GOTEST) -v ./...
+.PHONY: run
+run:
+	$(GOBUILD) -ldflags '$(LDFLAGS)'  -o $(NAME) $(SRCFILE) 
+	./$(NAME)
+.PHONY: deps
+deps:
+	$(GOMOD) tidy
+	$(GOMOD) download
+
 .PHONY: release
 release: linux darwin
 
 BUILDDIR:=$(BASEPATH)/../build
-
 .PHONY:Asset
 Asset:
 	@[ -d $(BUILDDIR) ] || mkdir -p $(BUILDDIR)
@@ -31,7 +44,7 @@ Asset:
 .PHONY: $(PLATFORMS)
 $(PLATFORMS): Asset
 	@echo "编译" $@
-	GOOS=$@ GOARCH=amd64 CGO_ENABLED=0 GO111MODULE=on GOPROXY=https://goproxy.cn go build -ldflags '$(LDFLAGS)'  -o $(NAME) $(SRCFILE)
+	GOOS=$@ GOARCH=amd64 CGO_ENABLED=0 GO111MODULE=on GOPROXY=https://goproxy.cn $(GOBUILD) -ldflags '$(LDFLAGS)'  -o $(NAME) $(SRCFILE)
 	cp -f $(NAME) $(DIRNAME)
 	cp -f $(NAME) $(GOBIN)
 	tar czvf $(BUILDDIR)/$(SOFTWARENAME)-$@-amd64.tar.gz $(DIRNAME)
