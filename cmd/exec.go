@@ -9,7 +9,6 @@ package cmd
 import (
 	"fmt"
 	"github.com/oldthreefeng/ango/play"
-	"github.com/unknwon/com"
 	"os"
 	"os/exec"
 	"strings"
@@ -80,8 +79,34 @@ func Exec(cmdStr, Type string) error {
 }
 
 func WriteToLog(Type string) error {
+	filename := "fabu.log"
 	args := strings.Split(Config, ".")[0]
 	date := time.Now().Format("2006-01-02 15:04:05")
-	data := fmt.Sprintf("[INFO] %s %s-%s %s成功\n", date, args, Tag, Type)
-	return com.WriteFile("fabu.log", []byte(data))
+	data := fmt.Sprintf("[INFO] %s %s-%s %s成功", date, args, Tag, Type)
+	var (
+		f *os.File
+		err error
+	)
+	if !IsFile(filename) {
+		// 文件不存在, 则创建
+		f, err = os.Create(filename)
+	} else {
+		// 文件存在, 则append.
+		f, err = os.OpenFile(filename, os.O_APPEND|os.O_WRONLY, 0644)
+	}
+
+	if err != nil {
+		return err
+	}
+	_, err = fmt.Fprintln(f, data)
+	defer f.Close()
+	return err
+}
+
+func IsFile(filePath string) bool {
+	f, e := os.Stat(filePath)
+	if e != nil {
+		return false
+	}
+	return !f.IsDir()
 }
