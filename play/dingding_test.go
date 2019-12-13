@@ -14,7 +14,7 @@ import (
 
 // TODO
 func Test_dingding(t *testing.T) {
-	body := fmt.Sprintf(TextTemplate,"hello ango", os.Getenv("DingDingMobiles"))
+	body := fmt.Sprintf(TextTemplate, "hello ango", os.Getenv("DingDingMobiles"))
 	fmt.Println(body)
 	//type args struct {
 	//	DingDingUrl string

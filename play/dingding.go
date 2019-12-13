@@ -73,20 +73,20 @@ type Text struct {
 
 func (m Text) Dingding(DingDingUrl string) error {
 	baseBody := fmt.Sprintf(TextTemplate, m.Text, m.AtMobiles)
-	return dingding(DingDingUrl,baseBody)
+	return dingding(DingDingUrl, baseBody)
 }
 
 func (m MarkDowning) Dingding(DingDingUrl string) error {
 	baseBody := fmt.Sprintf(MarkTemplate, m.Title, m.Text, m.AtMobiles)
-	return dingding(DingDingUrl,baseBody)
+	return dingding(DingDingUrl, baseBody)
 }
 
 func (m Linking) Dingding(DingDingUrl string) error {
 	baseBody := fmt.Sprintf(LinkTemplate, m.Title, m.Text, m.MessageUrl)
-	return dingding(DingDingUrl,baseBody)
+	return dingding(DingDingUrl, baseBody)
 }
 
-func dingding(DingDingUrl,baseBody string) error {
+func dingding(DingDingUrl, baseBody string) error {
 	req, err := http.NewRequest("POST", DingDingUrl, strings.NewReader(baseBody))
 	if err != nil {
 		return err
@@ -95,9 +95,12 @@ func dingding(DingDingUrl,baseBody string) error {
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-agent", "firefox")
 	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
 	defer resp.Body.Close()
 	fmt.Println(resp.StatusCode)
 	body, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
-	return err
+	return nil
 }

@@ -18,8 +18,8 @@ func TestWriteToLog(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
-		{"test01",args{"rollback"}, true},
-		{"test02",args{"deploy"}, true},
+		{"test01", args{"rollback"}, true},
+		{"test02", args{"deploy"}, true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
