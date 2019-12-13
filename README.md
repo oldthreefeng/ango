@@ -61,7 +61,7 @@ Flags:
 
 Global Flags:
   -a, --author string   author name for copyright attribution (default "louis.hong")
-  -f, --config string   ansible-playbook for yml config
+  -f, --filename string   ansible-playbook for yml config
   -t, --tag string      tags for the project version
 
 $ ango rollback -h
@@ -79,7 +79,7 @@ Flags:
 
 Global Flags:
   -a, --author string   author name for copyright attribution (default "louis.hong")
-  -f, --config string   ansible-playbook for yml config
+  -f, --filename string   ansible-playbook for yml config
   -t, --tags string     tags for the project version
 ```
 

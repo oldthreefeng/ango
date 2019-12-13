@@ -43,7 +43,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&Author, "author", "", "louis.hong", "author name for copyright attribution")
 	rootCmd.PersistentFlags().BoolVarP(&Detail, "verbose", "v", false, "verbose mode to see more detail infomation")
 	rootCmd.PersistentFlags().StringVarP(&Tag, "tags", "t", "", "tags for the project version(requried)")
-	rootCmd.PersistentFlags().StringVarP(&Config, "config", "f", "", "ansible-playbook for yml config(requried)")
+	rootCmd.PersistentFlags().StringVarP(&Config, "filename", "f", "", "ansible-playbook for yml config(requried)")
 	projCmd.PersistentFlags().StringVarP(&Comments, "comments", "m", "", "add comments when send message to dingding")
 	rollbackCmd.PersistentFlags().BoolVarP(&Real, "real", "r", false, "really to rollback this version")
 	rootCmd.AddCommand(projCmd)
