@@ -61,3 +61,8 @@ clean:
 	-rm -rf $(NAME)
 	-rm -rf $(DIRNAME)
 	-rm -rf $(BUILDDIR)
+
+.PHONY: push
+push: clean
+	-git push origin master
+	-git push github master
