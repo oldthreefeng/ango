@@ -25,7 +25,7 @@ var (
 		Example: "  ango deploy -f api.yml -t v1.2.0",
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			if Config != "" && Tag != "" {
+			if Config != ""  {
 				err := Deploy()
 				if err != nil {
 					fmt.Println(err)
@@ -55,7 +55,13 @@ func PlayBook(args string) error {
 }
 
 func Deploy() error {
-	cmdStr := fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, Config, Tag)
+	var cmdStr string
+	if Tag == "" {
+		cmdStr = fmt.Sprintf("%s %s  -f 1", AnsibleBin, Config)
+	} else  {
+		cmdStr = fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, Config, Tag)
+	}
+
 	if Detail {
 		cmdStr += " -vv"
 	}

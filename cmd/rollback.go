@@ -27,7 +27,7 @@ var (
 					return
 				}
 			} else {
-				fmt.Println(`Use "ango rollback -h" to get help `)
+				fmt.Println(`Use "ango rollback -h" to get help`)
 			}
 		},
 	}
