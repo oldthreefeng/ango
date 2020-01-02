@@ -11,6 +11,7 @@ GOCMD = go
 GOBUILD = $(GOCMD) build
 GOTEST = $(GOCMD) test
 GOMOD = $(GOCMD) mod
+GOFILES = $(shell find . -name "*.go" -type f )
 
 NAME := ango
 DIRNAME := bin
@@ -18,38 +19,50 @@ GOBIN := /usr/local/go/bin/
 SRCFILE= main.go
 SOFTWARENAME=$(NAME)-$(VERSION)
 
-PLATFORMS := linux darwin
-
-.PHONY: test
-test:
-	$(GOTEST) -v ./...
+PLATFORMS := darwin linux
 .PHONY: run
-run:
+run: deps
 	$(GOBUILD) -ldflags '$(LDFLAGS)'  -o $(NAME) $(SRCFILE) 
 	./$(NAME)
+
+.PHONY: fmt
+fmt:
+	@gofmt -s -w ${GOFILES}	
+
+.PHONY: test
+test: deps
+	$(GOTEST) -v ./...
+
 .PHONY: deps
 deps:
 	$(GOMOD) tidy
 	$(GOMOD) download
 
 .PHONY: release
-release: linux darwin
+release: darwin linux
 
 BUILDDIR:=$(BASEPATH)/../build
+
 .PHONY:Asset
 Asset:
 	@[ -d $(BUILDDIR) ] || mkdir -p $(BUILDDIR)
 	@[ -d $(DIRNAME) ] || mkdir -p $(DIRNAME)
 
 .PHONY: $(PLATFORMS)
-$(PLATFORMS): Asset
+$(PLATFORMS): Asset deps
 	@echo "编译" $@
 	GOOS=$@ GOARCH=amd64 CGO_ENABLED=0 GO111MODULE=on GOPROXY=https://goproxy.cn $(GOBUILD) -ldflags '$(LDFLAGS)'  -o $(NAME) $(SRCFILE)
 	cp -f $(NAME) $(DIRNAME)
 	cp -f $(NAME) $(GOBIN)
 	tar czvf $(BUILDDIR)/$(SOFTWARENAME)-$@-amd64.tar.gz $(DIRNAME)
+
 .PHONY: clean
 clean:
 	-rm -rf $(NAME)
 	-rm -rf $(DIRNAME)
 	-rm -rf $(BUILDDIR)
+
+.PHONY: push
+push: clean
+	-git push origin master
+	-git push github master

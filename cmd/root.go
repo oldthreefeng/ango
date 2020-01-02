@@ -19,7 +19,7 @@ var (
 	Tag        string
 	Author     string
 	Comments   string
-	Detail	   bool
+	Detail     bool
 	Real       bool
 	rootCmd    = &cobra.Command{
 		Use:   "ango ",

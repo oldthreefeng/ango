@@ -17,7 +17,7 @@ import (
 
 var (
 	DingDingUrl string = os.Getenv("DingDingUrl")
-	AllMo string = os.Getenv("DingDingMobiles")
+	AllMo       string = os.Getenv("DingDingMobiles")
 )
 
 const (
@@ -85,7 +85,7 @@ func WriteToLog(Type string) error {
 	data := fmt.Sprintf("[INFO] %s %s-%s %s成功", date, args, Tag, Type)
 	fmt.Println(data)
 	var (
-		f *os.File
+		f   *os.File
 		err error
 	)
 	if !IsFile(filename) {
