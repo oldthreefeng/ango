@@ -47,6 +47,7 @@ func init() {
 	projCmd.PersistentFlags().StringVarP(&Comments, "comments", "m", "", "add comments when send message to dingding")
 	rollbackCmd.PersistentFlags().BoolVarP(&Real, "real", "r", false, "really to rollback this version")
 	rootCmd.AddCommand(projCmd)
+	rootCmd.AddCommand(listjCmd)
 	rootCmd.AddCommand(rollbackCmd)
 }
 
