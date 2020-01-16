@@ -19,14 +19,10 @@ var (
 		Use:     "list [flags]",
 		Short:   "to list project",
 		Long:    "use ango to lsit project with webhook to dingding",
-		Example: "  ango deploy -f api.yml -t v1.2.0",
+		Example: "  ango list",
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			if Config != ""  {
-				List(pathName)
-			} else {
-				fmt.Println(`Use "ango deploy -h" to get help `)
-			}
+			List(pathName)
 		},
 	}
 )
