@@ -32,7 +32,7 @@ func Exec(cmdStr, Type string) error {
 	fmt.Println(cmdStr)
 	// yj-admall.yml ==> yj-admall
 	args := strings.Split(Config, ".")[0]
-	project := strings.Split(args,"/")[len(args)-2]
+	project := strings.Split(Config,"/")
 	//fmt.Printf("%s,%s", args, Config)
 	cmd := exec.Command("sh", "-c", cmdStr)
 	stdout, err := cmd.StdoutPipe()
@@ -62,7 +62,7 @@ func Exec(cmdStr, Type string) error {
 	if Type == "rollback" {
 		t.AtMobiles = AllMo
 	} else {
-		switch project {
+		switch project[len(project)-2] {
 		case "weimall":
 			t.AtMobiles = WeiMa
 		case "penglai":

@@ -5,7 +5,11 @@
  */
 package cmd
 
-import "testing"
+import (
+	"fmt"
+	"strings"
+	"testing"
+)
 
 func TestWriteToLog(t *testing.T) {
 	type args struct {
@@ -22,4 +26,9 @@ func TestWriteToLog(t *testing.T) {
 			WriteToLog(tt.args.Type)
 		})
 	}
+
+	var config = "test/test.yml"
+	project := strings.Split(config,"/")
+	fmt.Println(project[len(project)-1])
+	fmt.Println(project[len(project)-2])
 }
