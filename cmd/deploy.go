@@ -13,7 +13,7 @@ import (
 
 const (
 	AnsibleBin = "/usr/bin/ansible-playbook "
-	Version    = "1.0.0"
+	Version    = "1.0.1"
 )
 
 var (
@@ -63,7 +63,7 @@ func Deploy() error {
 	}
 
 	if Detail {
-		cmdStr += " -vv"
+		cmdStr += " -v"
 	}
 	return Exec(cmdStr, DeployType)
 }
