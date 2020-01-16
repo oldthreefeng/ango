@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	pathName = "/opt/playbook/prod"
+	PathName = "/opt/playbook/prod"
 	listCmd = &cobra.Command{
 		Use:     "list [flags]",
 		Short:   "to list project i can deploy with ango",
@@ -22,7 +22,7 @@ var (
 		Example: "ango list",
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			List(pathName)
+			List(PathName)
 		},
 	}
 )

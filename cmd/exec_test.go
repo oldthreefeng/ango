@@ -31,4 +31,12 @@ func TestWriteToLog(t *testing.T) {
 	project := strings.Split(config,"/")
 	fmt.Println(project[len(project)-1])
 	fmt.Println(project[len(project)-2])
+
+	var v = "/opt/playbook/prod/hudong/fotoup-server.yml"
+	var arg = "photo-up-server"
+	if strings.Contains(v,arg) {
+		fmt.Println(v)
+	} else {
+		fmt.Println(arg)
+	}
 }

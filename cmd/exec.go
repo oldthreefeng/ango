@@ -11,6 +11,7 @@ import (
 	"github.com/oldthreefeng/ango/play"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -32,7 +33,16 @@ func Exec(cmdStr, Type string) error {
 	fmt.Println(cmdStr)
 	// yj-admall.yml ==> yj-admall
 	args := strings.Split(Config, ".")[0]
-	project := strings.Split(Config,"/")
+	files , _ := WalkDir(PathName,".yml")
+	// find the project name
+	var project string
+	for _, v := range files {
+		if  strings.Contains(v, args) {
+			projects := strings.Split(v,"/")
+			project = projects[len(projects)-2]
+			break
+		}
+	}
 	//fmt.Printf("%s,%s", args, Config)
 	cmd := exec.Command("sh", "-c", cmdStr)
 	stdout, err := cmd.StdoutPipe()
@@ -62,7 +72,7 @@ func Exec(cmdStr, Type string) error {
 	if Type == "rollback" {
 		t.AtMobiles = AllMo
 	} else {
-		switch project[len(project)-2] {
+		switch project {
 		case "weimall":
 			t.AtMobiles = WeiMa
 		case "penglai":
@@ -82,10 +92,18 @@ func Exec(cmdStr, Type string) error {
 }
 
 func WriteToLog(Type string)  {
-	filename := "fabu.log"
+	var filename string
+	switch runtime.GOOS {
+	case "windows":
+		filename = "fabu.log"
+	case "linux":
+		filename = PathName + "/fabu.log"
+	default:
+		filename = PathName + "/fabu.log"
+	}
 	args := strings.Split(Config, ".")[0]
 	date := time.Now().Format("2006-01-02 15:04:05")
-	data := fmt.Sprintf("[INFO] %s %s-%s %s成功", date, args, Tag, Type)
+	data := fmt.Sprintf("[INFO] %s %s-%s %s成功\n", date, args, Tag, Type)
 	file, _ := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	file.WriteString(data)
 	defer file.Close()
