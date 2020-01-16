@@ -7,10 +7,12 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/oldthreefeng/ango/play"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -28,11 +30,11 @@ const (
 	XiaoKe = "16621186818"
 )
 
-func Exec(cmdStr, Type string) error {
+func Exec(cmdStr, Type, project string) error {
 	fmt.Println(cmdStr)
 	// yj-admall.yml ==> yj-admall
 	args := strings.Split(Config, ".")[0]
-	project := strings.Split(Config,"/")
+	// find the project name
 	//fmt.Printf("%s,%s", args, Config)
 	cmd := exec.Command("sh", "-c", cmdStr)
 	stdout, err := cmd.StdoutPipe()
@@ -59,33 +61,40 @@ func Exec(cmdStr, Type string) error {
 	var t play.Text
 	//t.Title = fmt.Sprintf("%s-%s", args, Tag)
 	t.Text = fmt.Sprintf("%s:%s %s成功, 请测试确认\n%s", args, Tag, Type, Comments)
-	if Type == "rollback" {
+	switch project {
+	case "weimall":
+		t.AtMobiles = WeiMa
+	case "penglai":
+		t.AtMobiles = Adcom
+	case "card":
+		t.AtMobiles = CardMo
+	case "hudong":
+		t.AtMobiles = Hudong
+	case "xiaoke":
+		t.AtMobiles = XiaoKe
+	default:
 		t.AtMobiles = AllMo
-	} else {
-		switch project[len(project)-2] {
-		case "weimall":
-			t.AtMobiles = WeiMa
-		case "penglai":
-			t.AtMobiles = Adcom
-		case "card":
-			t.AtMobiles = CardMo
-		case "hudong":
-			t.AtMobiles = Hudong
-		case "xiaoke":
-			t.AtMobiles = XiaoKe
-		default:
-			t.AtMobiles = AllMo
-		}
 	}
 	WriteToLog(Type)
-	return  t.Dingding(DingDingUrl)
+	if DingDingUrl == "" {
+		return errors.New("DingDingUrl is null, none to send~")
+	}
+	return t.Dingding(DingDingUrl)
 }
 
-func WriteToLog(Type string)  {
-	filename := "fabu.log"
+func WriteToLog(Type string) {
+	var filename string
+	switch runtime.GOOS {
+	case "windows":
+		filename = "fabu.log"
+	case "linux":
+		filename = PathName + "/fabu.log"
+	default:
+		filename = PathName + "/fabu.log"
+	}
 	args := strings.Split(Config, ".")[0]
 	date := time.Now().Format("2006-01-02 15:04:05")
-	data := fmt.Sprintf("[INFO] %s %s-%s %s成功", date, args, Tag, Type)
+	data := fmt.Sprintf("[INFO] %s %s-%s %s成功\n", date, args, Tag, Type)
 	file, _ := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	file.WriteString(data)
 	defer file.Close()
