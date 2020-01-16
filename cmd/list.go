@@ -15,11 +15,11 @@ import (
 
 var (
 	pathName = "/opt/playbook/prod"
-	listjCmd    = &cobra.Command{
+	listCmd = &cobra.Command{
 		Use:     "list [flags]",
-		Short:   "to list project",
-		Long:    "use ango to lsit project with webhook to dingding",
-		Example: "  ango list",
+		Short:   "to list project i can deploy with ango",
+		Long:    "use ango to list current path yml file, i can deploy with ango",
+		Example: "ango list",
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			List(pathName)
@@ -27,8 +27,8 @@ var (
 	}
 )
 
-func List(pathname string ) error {
-	f,err := WalkDir(pathname, ".yml")
+func List(pathname string) error {
+	f, err := WalkDir(pathname, ".yml")
 	if err != nil {
 		return err
 	}
@@ -43,11 +43,7 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 	suffix = strings.ToUpper(suffix) //忽略后缀匹配的大小写
 
 	err = filepath.Walk(dirPth, func(filename string, fi os.FileInfo, err error) error { //遍历目录
-		//if err != nil { //忽略错误
-		// return err
-		//}
-
-		if fi.IsDir() { // 忽略目录
+		if fi.IsDir() {                                                                  // 忽略目录
 			return nil
 		}
 

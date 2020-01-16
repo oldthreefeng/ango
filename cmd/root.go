@@ -25,7 +25,8 @@ var (
 		Use:   "ango ",
 		Short: "ango 是一个用于部署项目至生产环境的部署工具",
 		Long: `基于golang开发的一个用于部署项目至生产环境的部署工具
-目前仅使用playbook部署/回滚相关业务并使用钉钉的"webhook"通知, 文档查看: https://github.com/oldthreefeng/ango`,
+目前仅使用playbook部署/回滚相关业务并使用钉钉的"webhook"通知, 文档查看: https://github.com/oldthreefeng/ango
+run "ango list" to find playbook to deploy`,
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Printf(`ango is cli tools to running Ansible playbooks from Golang.
 run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
@@ -45,9 +46,9 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&Tag, "tags", "t", "", "tags for the project version")
 	rootCmd.PersistentFlags().StringVarP(&Config, "filename", "f", "", "ansible-playbook for yml config(requried)")
 	projCmd.PersistentFlags().StringVarP(&Comments, "comments", "m", "", "add comments when send message to dingding")
-	rollbackCmd.PersistentFlags().BoolVarP(&Real, "real", "r", false, "really to rollback this version")
+	rollbackCmd.PersistentFlags().BoolVarP(&Real, "real", "", false, "really to rollback this version")
 	rootCmd.AddCommand(projCmd)
-	rootCmd.AddCommand(listjCmd)
+	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(rollbackCmd)
 }
 

@@ -21,16 +21,18 @@ var (
 )
 
 const (
-	WeiMo  = "17719540702"
+	WeiMa  = "17719540702"
 	CardMo = "13764645987"
 	Adcom  = "15862168925"
 	Hudong = "13258335315"
+	XiaoKe = "16621186818"
 )
 
 func Exec(cmdStr, Type string) error {
 	fmt.Println(cmdStr)
 	// yj-admall.yml ==> yj-admall
 	args := strings.Split(Config, ".")[0]
+	project := strings.Split(args,"/")[len(args)-2]
 	//fmt.Printf("%s,%s", args, Config)
 	cmd := exec.Command("sh", "-c", cmdStr)
 	stdout, err := cmd.StdoutPipe()
@@ -60,17 +62,17 @@ func Exec(cmdStr, Type string) error {
 	if Type == "rollback" {
 		t.AtMobiles = AllMo
 	} else {
-		switch args {
-		case "weimall/api", "weimall/yj-mall", "weimall/yj-h5", "weimall/plmall", "weimall/yj-admall":
-			t.AtMobiles = WeiMo
-		case "penglai/adcom", "penglai/www-ypl":
+		switch project {
+		case "weimall":
+			t.AtMobiles = WeiMa
+		case "penglai":
 			t.AtMobiles = Adcom
 		case "card":
 			t.AtMobiles = CardMo
-		case "hudong/fotoup-server", "hudong/order-server", "hudong/sign-router", "hudong/service-apis",
-		"hudong/sign-server", "hudong/hudong-sign-client", "hudong/service-msite",
-		"hudong/hudong-sign-manager", "hudong/service-user":
+		case "hudong":
 			t.AtMobiles = Hudong
+		case "xiaoke":
+			t.AtMobiles = XiaoKe
 		default:
 			t.AtMobiles = AllMo
 		}
