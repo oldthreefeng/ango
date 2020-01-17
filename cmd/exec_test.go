@@ -39,4 +39,13 @@ func TestWriteToLog(t *testing.T) {
 	} else {
 		fmt.Println(arg)
 	}
+
+	const oTag      = "penglai-release,ypl-back,course-job,course-web"
+	yml := "course-job.yml"
+	for _, v := range strings.Split(NoTag, ",") {
+		if strings.Split(yml, ".")[0] == v {
+			fmt.Println(v)
+			break
+		}
+	}
 }

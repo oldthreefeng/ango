@@ -56,3 +56,17 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 
 	return files, err
 }
+
+func GetProjectName(config string) (yml, baseYml, baseProject string) {
+	files , _ := WalkDir(PathName,".yml")
+	for _, v := range files {
+		if  strings.Contains(v, config) {
+			yml = v
+			base := strings.Split(yml, "/")
+			baseYml = base[len(base)-1]
+			baseProject = base[len(base)-2]
+			break
+		}
+	}
+	return
+}

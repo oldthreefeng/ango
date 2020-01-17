@@ -6,7 +6,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 )
@@ -20,28 +19,24 @@ var (
 		Args:    cobra.NoArgs,
 		Example: "  ango rollback -f roll_api.yml -t v1.2 -r ",
 		Run: func(cmd *cobra.Command, args []string) {
-			if Config != "" && Tag != "" {
-				err := RollBack()
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-			} else {
+			if Config == "" || Tag == "" || !Real {
 				fmt.Println(`Use "ango rollback -h" to get help`)
+				return
+			}
+			yml, _, project := GetProjectName(Config)
+			err := RollBack(yml, project)
+			if err != nil {
+				fmt.Println(err)
+				return
 			}
 		},
 	}
 )
 
-func RollBack() error {
-	cmdStr := fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, Config, Tag)
-	if Detail {
+func RollBack(yml, project string) error {
+	cmdStr := fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, yml, Tag)
+	if Verbose {
 		cmdStr += " -vv"
 	}
-	if Real {
-		return Exec(cmdStr, rollbackType)
-	} else {
-		return errors.New("use extra flags -r or --real to run rollback")
-	}
-
+	return Exec(cmdStr, rollbackType, project)
 }

@@ -13,7 +13,8 @@ import (
 
 const (
 	AnsibleBin = "/usr/bin/ansible-playbook "
-	Version    = "1.0.1"
+	Version    = "1.1.1"
+	NoTag      = "penglai-release,ypl-back,course-job,course-web"
 )
 
 var (
@@ -25,14 +26,22 @@ var (
 		Example: "  ango deploy -f api.yml -t v1.2.0",
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			if Config != ""  {
-				err := Deploy()
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-			} else {
+			if Config == "" {
 				fmt.Println(`Use "ango deploy -h" to get help `)
+				return
+			}
+			var flag bool
+			yml, baseYml, baseProject := GetProjectName(Config)
+			for _, v := range strings.Split(NoTag, ",") {
+				if strings.Split(baseYml, ".")[0] == v {
+					flag = true
+					break
+				}
+			}
+			err := Deploy(yml, baseProject, flag)
+			if err != nil {
+				fmt.Println(err)
+				return
 			}
 		},
 	}
@@ -51,19 +60,19 @@ func PlayBook(args string) error {
 		args = strings.Split(Config, ".")[0]
 	}
 	cmdStr := fmt.Sprintf("%s %s.yml -e version=%s -f 1 ", AnsibleBin, args, Tag)
-	return Exec(cmdStr, "deploy 部署")
+	return Exec(cmdStr, "deploy 部署", "")
 }
 
-func Deploy() error {
+func Deploy(yml, baseProject string, flag bool) error {
 	var cmdStr string
-	if Tag == "" {
-		cmdStr = fmt.Sprintf("%s %s  -f 1", AnsibleBin, Config)
-	} else  {
-		cmdStr = fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, Config, Tag)
+	if flag {
+		cmdStr = fmt.Sprintf("%s %s  -f 1", AnsibleBin, yml)
+	} else {
+		cmdStr = fmt.Sprintf("%s %s -e version=%s -f 1", AnsibleBin, yml, Tag)
 	}
 
-	if Detail {
+	if Verbose {
 		cmdStr += " -v"
 	}
-	return Exec(cmdStr, DeployType)
+	return Exec(cmdStr, DeployType, baseProject)
 }

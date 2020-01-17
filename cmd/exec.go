@@ -29,20 +29,11 @@ const (
 	XiaoKe = "16621186818"
 )
 
-func Exec(cmdStr, Type string) error {
+func Exec(cmdStr, Type, project string) error {
 	fmt.Println(cmdStr)
 	// yj-admall.yml ==> yj-admall
 	args := strings.Split(Config, ".")[0]
-	files , _ := WalkDir(PathName,".yml")
 	// find the project name
-	var project string
-	for _, v := range files {
-		if  strings.Contains(v, args) {
-			projects := strings.Split(v,"/")
-			project = projects[len(projects)-2]
-			break
-		}
-	}
 	//fmt.Printf("%s,%s", args, Config)
 	cmd := exec.Command("sh", "-c", cmdStr)
 	stdout, err := cmd.StdoutPipe()
@@ -69,29 +60,25 @@ func Exec(cmdStr, Type string) error {
 	var t play.Text
 	//t.Title = fmt.Sprintf("%s-%s", args, Tag)
 	t.Text = fmt.Sprintf("%s:%s %s成功, 请测试确认\n%s", args, Tag, Type, Comments)
-	if Type == "rollback" {
+	switch project {
+	case "weimall":
+		t.AtMobiles = WeiMa
+	case "penglai":
+		t.AtMobiles = Adcom
+	case "card":
+		t.AtMobiles = CardMo
+	case "hudong":
+		t.AtMobiles = Hudong
+	case "xiaoke":
+		t.AtMobiles = XiaoKe
+	default:
 		t.AtMobiles = AllMo
-	} else {
-		switch project {
-		case "weimall":
-			t.AtMobiles = WeiMa
-		case "penglai":
-			t.AtMobiles = Adcom
-		case "card":
-			t.AtMobiles = CardMo
-		case "hudong":
-			t.AtMobiles = Hudong
-		case "xiaoke":
-			t.AtMobiles = XiaoKe
-		default:
-			t.AtMobiles = AllMo
-		}
 	}
 	WriteToLog(Type)
-	return  t.Dingding(DingDingUrl)
+	return t.Dingding(DingDingUrl)
 }
 
-func WriteToLog(Type string)  {
+func WriteToLog(Type string) {
 	var filename string
 	switch runtime.GOOS {
 	case "windows":
