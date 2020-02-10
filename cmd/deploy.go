@@ -14,7 +14,7 @@ import (
 const (
 	AnsibleBin = "/usr/bin/ansible-playbook "
 	Version    = "1.1.1"
-	NoTag      = "penglai-release,ypl-back,course-job,course-web"
+	NoTag      = "penglai-release,ypl-back,course-job,course-web,daka-web"
 )
 
 var (
