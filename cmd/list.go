@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	PathName = "/opt/playbook/prod"
+	PathName = os.Getenv("AngoBaseDir")
 	listCmd = &cobra.Command{
 		Use:     "list [flags]",
 		Short:   "to list project i can deploy with ango",
@@ -22,13 +22,16 @@ var (
 		Example: "ango list",
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
-			List(PathName)
+			List()
 		},
 	}
 )
 
-func List(pathname string) error {
-	f, err := WalkDir(pathname, ".yml")
+func List() error {
+	if PathName == "" {
+		PathName = "/opt/playbook/prod"
+	}
+	f, err := WalkDir(PathName, ".yml")
 	if err != nil {
 		return err
 	}
@@ -58,6 +61,9 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 }
 
 func GetProjectName(config string) (yml, baseYml, baseProject string) {
+	if PathName == "" {
+		PathName = "/opt/playbook/prod"
+	}
 	files , _ := WalkDir(PathName,".yml")
 	for _, v := range files {
 		if  strings.Contains(v, config) {
