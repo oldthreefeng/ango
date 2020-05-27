@@ -14,7 +14,8 @@ import (
 )
 
 var (
-	PathName = os.Getenv("AngoBaseDir")
+	PathName = getDefaultPathname("AngoBaseDir", "/opt/playbook/prod")
+	//PathName = os.Getenv("AngoBaseDir")
 	listCmd = &cobra.Command{
 		Use:     "list [flags]",
 		Short:   "to list project i can deploy with ango",
@@ -27,10 +28,15 @@ var (
 	}
 )
 
-func List() error {
-	if PathName == "" {
-		PathName = "/opt/playbook/prod"
+func getDefaultPathname(key, defVal string)  string {
+	val, ex := os.LookupEnv(key)
+	if !ex {
+		return defVal
 	}
+	return val
+}
+
+func List() error {
 	f, err := WalkDir(PathName, ".yml")
 	if err != nil {
 		return err
@@ -61,16 +67,17 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 }
 
 func GetProjectName(config string) (yml, baseYml, baseProject string) {
-	if PathName == "" {
-		PathName = "/opt/playbook/prod"
-	}
 	files , _ := WalkDir(PathName,".yml")
 	for _, v := range files {
 		if  strings.Contains(v, config) {
 			yml = v
+			// yml = /opt/playbook/prod/hudong/talk-server.yml
 			base := strings.Split(yml, "/")
+			// base = [opt,playbook,prod,hudong,talk-server.yml]
 			baseYml = base[len(base)-1]
+			// baseYml = talk-server.yml
 			baseProject = base[len(base)-2]
+			// baseProject = hudong
 			break
 		}
 	}

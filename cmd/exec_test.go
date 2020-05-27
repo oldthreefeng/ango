@@ -40,7 +40,7 @@ func TestWriteToLog(t *testing.T) {
 		fmt.Println(arg)
 	}
 
-	const oTag      = "penglai-release,ypl-back,course-job,course-web"
+	const NoTag      = "penglai-release,ypl-back,course-job,course-web"
 	yml := "course-job.yml"
 	for _, v := range strings.Split(NoTag, ",") {
 		if strings.Split(yml, ".")[0] == v {
