@@ -7,6 +7,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/oldthreefeng/ango/play"
 	"os"
@@ -75,6 +76,9 @@ func Exec(cmdStr, Type, project string) error {
 		t.AtMobiles = AllMo
 	}
 	WriteToLog(Type)
+	if DingDingUrl == "" {
+		return errors.New("DingDingUrl is null, none to send~")
+	}
 	return t.Dingding(DingDingUrl)
 }
 
