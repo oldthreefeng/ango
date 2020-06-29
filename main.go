@@ -18,3 +18,7 @@ func init() {
 func main() {
 	cmd.Execute()
 }
+
+// test rebase 1
+// test rebase 2
+// test rebase 3
