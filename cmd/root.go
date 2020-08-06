@@ -62,7 +62,7 @@ run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
 	fmt.Printf("Git Commit Hash:     %s\n", Githash)
 	fmt.Printf("Build Time :         %s\n", Buildstamp)
 	fmt.Printf("Go Version:          %s\n", Goversion)
-	fmt.Printf("Author :             %s\n", Author)
+	fmt.Printf("BuildBy :            %s\n", Author)
 }
 
 func init() {
