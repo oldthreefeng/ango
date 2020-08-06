@@ -15,11 +15,12 @@ var (
 	Buildstamp = ""
 	Githash    = ""
 	Goversion  = ""
+	Version    = "latest"
 	Config     string
 	Tag        string
 	Author     string
 	Comments   string
-	Verbose     bool
+	Verbose    bool
 	Real       bool
 	rootCmd    = &cobra.Command{
 		Use:   "ango ",
@@ -28,14 +29,7 @@ var (
 目前仅使用playbook部署/回滚相关业务并使用钉钉的"webhook"通知, 文档查看: https://github.com/oldthreefeng/ango
 run "ango list" to find playbook to deploy`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf(`ango is cli tools to running Ansible playbooks from Golang.
-run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
-`)
-			fmt.Printf("ango version :       %s\n", Version)
-			fmt.Printf("Git Commit Hash:     %s\n", Githash)
-			fmt.Printf("UTC Build Time :     %s\n", Buildstamp)
-			fmt.Printf("Go Version:          %s\n", Goversion)
-			fmt.Printf("Author :             %s\n", Author)
+			VersionStr()
 		},
 	}
 )
@@ -57,4 +51,15 @@ func Execute() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+}
+
+func VersionStr() {
+	fmt.Printf(`ango is cli tools to running Ansible playbooks from Golang.
+run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
+`)
+	fmt.Printf("ango version :       %s\n", Version)
+	fmt.Printf("Git Commit Hash:     %s\n", Githash)
+	fmt.Printf("Build Time :     	%s\n", Buildstamp)
+	fmt.Printf("Go Version:          %s\n", Goversion)
+	fmt.Printf("Author :             %s\n", Author)
 }

@@ -39,7 +39,7 @@ Author :             louis.hong
 use go get 
 
 ```bash
-$ go get github.com/oldthreefeng/ango
+$ go get -u github.com/oldthreefeng/ango
 ```
 
 ### run with palybook
@@ -133,6 +133,26 @@ $ tail -f fabu.log
 ```
 
 that's all
+
+## support read stdin 
+
+read stdin and save file to AngoBaseDir/tmp.yml then run the ansible shell
+
+```shell
+$ cat api.yml | ango deploy -f - -t v1.2.0
+```
+
+Ango Version 1.2.0
+
+## support Url file 
+
+read file name from url path then save file to AngoBaseDir/filename. then run ansible shell
+
+**filename must has suffix .yml**
+
+```shell
+$ ango deploy -f  http://www.fenghong.tech/ansible/test/test.yml -t v1.2.0
+```
 
 [thanks to jetbrains](https://www.jetbrains.com/?from=ginuse)
 

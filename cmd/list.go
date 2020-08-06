@@ -42,14 +42,18 @@ func getDefaultPathname(key, defVal string)  string {
 }
 
 func List() error {
-	f, err := WalkDir(PathName, ".yml")
-	if err != nil {
-		return err
-	}
+	f := list()
 	for _, v := range f {
 		fmt.Println(v)
 	}
 	return nil
+}
+
+func list() (f []string) {
+	f, _ = WalkDir(PathName, ".yml")
+	f1,_ := WalkDir(PathName, ".yaml")
+	f = append(f,f1...)
+	return f
 }
 
 func WalkDir(dirPth, suffix string) (files []string, err error) {
@@ -72,7 +76,7 @@ func WalkDir(dirPth, suffix string) (files []string, err error) {
 }
 
 func GetProjectName(config string) (yml, baseYml, baseProject string) {
-	files , _ := WalkDir(PathName,".yml")
+	files := list()
 	for _, v := range files {
 		if  strings.Contains(v, config) {
 			yml = v

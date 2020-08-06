@@ -100,6 +100,7 @@ func Exec(cmdStr, Type, project string) error {
 	return t.Dingding(DingDingUrl)
 }
 
+// execCmd is run os command where err occurs to Exit
 func execCmd(name string, arg ...string) error {
 	fmt.Println("[os]exec cmd is :", name, arg)
 	cmd := exec.Command(name, arg[:]...)
@@ -109,7 +110,7 @@ func execCmd(name string, arg ...string) error {
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println("[os]os call error.", err)
-		return err
+		os.Exit(-1)
 	}
 	return nil
 }
