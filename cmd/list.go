@@ -14,7 +14,8 @@ import (
 )
 
 var (
-	PathName = getDefaultPathname("AngoBaseDir", "/opt/playbook/prod")
+	//PathName = getDefaultPathname("AngoBaseDir", "/opt/playbook/prod")
+	PathName string
 	listExample = `
 	# first to base where your yml to store .
 	# "export AngoBaseDir='/usr/local/'" 
@@ -33,16 +34,12 @@ var (
 	}
 )
 
-func getDefaultPathname(key, defVal string)  string {
-	val, ex := os.LookupEnv(key)
-	if !ex {
-		return defVal
-	}
-	return val
-}
 
 func List() error {
 	f := list()
+	if f == nil {
+		return nil
+	}
 	for _, v := range f {
 		fmt.Println(v)
 	}
@@ -57,7 +54,7 @@ func list() (f []string) {
 }
 
 func WalkDir(dirPth, suffix string) (files []string, err error) {
-	files = make([]string, 0, 30)
+	files = make([]string, 0, 100)
 	suffix = strings.ToUpper(suffix) //忽略后缀匹配的大小写
 
 	err = filepath.Walk(dirPth, func(filename string, fi os.FileInfo, err error) error { //遍历目录

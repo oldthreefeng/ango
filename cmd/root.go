@@ -39,6 +39,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose mode to see more detail infomation")
 	rootCmd.PersistentFlags().StringVarP(&Tag, "tags", "t", "", "tags for the project version")
 	rootCmd.PersistentFlags().StringVarP(&Config, "filename", "f", "", "ansible-playbook for yml config(requried)")
+	rootCmd.PersistentFlags().StringVarP(&PathName, "path", "p", "", "ango basedir")
 	projCmd.PersistentFlags().StringVarP(&Comments, "comments", "m", "", "add comments when send message to dingding")
 	rollbackCmd.PersistentFlags().BoolVarP(&Real, "real", "", false, "really to rollback this version")
 	rootCmd.AddCommand(projCmd)
@@ -62,4 +63,25 @@ run "ango -h" get more help, more see https://github.com/oldthreefeng/ango
 	fmt.Printf("Build Time :         %s\n", Buildstamp)
 	fmt.Printf("Go Version:          %s\n", Goversion)
 	fmt.Printf("Author :             %s\n", Author)
+}
+
+func init() {
+	if PathName == "" {
+		PathName = getDefaultPathname("AngoBaseDir", "/opt/playbook/")
+	}
+	if !FileExist(PathName) {
+		err := os.Mkdir(PathName, 0770)
+		if err != nil {
+			fmt.Println("mkdir ango Base dir err")
+			os.Exit(-1)
+		}
+	}
+}
+
+func getDefaultPathname(key, defVal string)  string {
+	val, ex := os.LookupEnv(key)
+	if !ex {
+		return defVal
+	}
+	return val
 }
