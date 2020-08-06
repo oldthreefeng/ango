@@ -11,11 +11,12 @@ GOCMD = go
 GOBUILD = $(GOCMD) build
 GOTEST = $(GOCMD) test
 GOMOD = $(GOCMD) mod
+GOPATH = $(shell go env GOPATH)
 GOFILES = $(shell find . -name "*.go" -type f )
 
 NAME := ango
-DIRNAME := bin
-GOBIN := /usr/local/go/bin/
+DIRNAME := output/bin
+GOBIN := $(GOPATH)/bin/
 SRCFILE= main.go
 SOFTWARENAME=$(NAME)-$(VERSION)
 
@@ -41,7 +42,7 @@ deps:
 .PHONY: release
 release: darwin linux
 
-BUILDDIR:=$(BASEPATH)/../build
+BUILDDIR:=$(BASEPATH)/output
 
 .PHONY:Asset
 Asset:

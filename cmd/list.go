@@ -15,12 +15,17 @@ import (
 
 var (
 	PathName = getDefaultPathname("AngoBaseDir", "/opt/playbook/prod")
+	listExample = `
+	# first to base where your yml to store .
+	# "export AngoBaseDir='/usr/local/'" 
+	# use "ango list" to recursion list  all *.yml 
+`
 	//PathName = os.Getenv("AngoBaseDir")
 	listCmd = &cobra.Command{
 		Use:     "list [flags]",
 		Short:   "to list project i can deploy with ango",
 		Long:    "use ango to list current path yml file, i can deploy with ango",
-		Example: "ango list",
+		Example: listExample,
 		Args:    cobra.NoArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			List()
