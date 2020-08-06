@@ -6,6 +6,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 	echo "Asia/Shanghai" > /etc/timezone && apk add --update bash && apk add curl && \
 	apk add wget && \
 	rm -rf /var/cache/apk/*
+ENV AngoBaseDir /tmp
 
 COPY ango /usr/bin/ango
 
