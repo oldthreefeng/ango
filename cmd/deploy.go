@@ -27,8 +27,8 @@ const (
 )
 
 var (
-	DeployType = "deploy"
-	FileConfig string
+	DeployType    = "deploy"
+	FileConfig    string
 	exampleDeploy = `
 	# use file to deploy, file name must in your AngoBaseDir
 	ango deploy -f api.yml -t v1.2.0
@@ -51,7 +51,7 @@ var (
 				}
 			}
 			var flag bool
-			FileConfig , _ = downloadFile(Config)
+			FileConfig, _ = downloadFile(Config)
 			yml, baseYml, baseProject := GetProjectName(FileConfig)
 			for _, v := range strings.Split(NoTag, ",") {
 				if strings.Split(baseYml, ".")[0] == v {
@@ -74,7 +74,6 @@ var (
 		},
 	}
 )
-
 
 func Deploy(yml, baseProject string, flag bool) error {
 	var cmdStr string
@@ -103,6 +102,12 @@ func ReadStdin() error {
 func ExitCase(ymlUrl string) bool {
 	if ymlUrl == "-" {
 		return false
+	}
+	if !strings.HasPrefix(ymlUrl, "http") {
+		yml, _, _ := GetProjectName(path.Base(ymlUrl))
+		if yml != "" {
+			return false
+		}
 	}
 	return ymlUrlCheck(ymlUrl)
 }
