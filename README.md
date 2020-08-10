@@ -148,10 +148,56 @@ Ango Version 1.2.0
 
 read file name from url path then save file to AngoBaseDir/filename. then run ansible shell
 
-**filename must has suffix .yml**
+**filename must has suffix .yml or .yaml**
 
 ```shell
 $ ango deploy -f  http://www.fenghong.tech/ansible/test/test.yml -t v1.2.0
+```
+
+## Use in docker 
+
+```shell
+$ docker pull louisehong/ango
+## use local file to acess 
+
+$ cat test.yml
+- hosts: test 
+  remote_user: root
+  tasks:
+    - name: ping test
+      shell: "echo {{version}}"
+      register: echo
+    - name: echo
+      debug: var=echo.stdout
+      with_items: echo.results
+
+$ cat hosts
+
+$ docker run --rm -v ~/.ssh:/root/.ssh -v /etc/ansible/hosts:/etc/ansible/hosts louisehong/ango \
+  deploy -f  http://www.fenghong.tech/ansible/test/test.yml -t v1.2.0
+[os]exec cmd is : /bin/sh [-c mkdir -p /tmp && cd /tmp &&  wget -c  http://www.fenghong.tech/ansible/test/test.yml ]
+Connecting to www.fenghong.tech (183.131.200.61:80)
+Connecting to www.fenghong.tech (183.131.200.69:443)
+test.yml             100% |*******************************|   196   0:00:00 ETA
+
+[os]exec cmd is : /bin/sh [-c /usr/bin/ansible-playbook  /tmp/test.yml -e version=v1.2.0 -f 1]
+
+PLAY [test] ********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.0.23]
+
+TASK [ping test] ***************************************************************
+changed: [192.168.0.23]
+
+TASK [echo] ********************************************************************
+ok: [192.168.0.23] => (item=echo.results) => {
+    "echo.stdout": "v1.2.0", 
+    "item": "echo.results"
+}
+
+PLAY RECAP *********************************************************************
+192.168.0.23               : ok=3    changed=1    unreachable=0    failed=0 
 ```
 
 [thanks to jetbrains](https://www.jetbrains.com/?from=ginuse)
